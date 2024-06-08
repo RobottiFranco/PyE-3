@@ -1,16 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from scipy.stats import geom, mode
+from scipy.stats import poisson, mode
 
-# Parámetro de la distribución geométrica
-p = 0.08
+# Parámetro de la distribución de Poisson
+lmbda = 30
 
 # Tamaños de las muestras
 sample_sizes = [10**2, 10**3, 10**4, 10**5]
 
 # Generar muestras aleatorias
-samples = [geom.rvs(p, size=size) for size in sample_sizes]
+samples = [poisson.rvs(lmbda, size=size) for size in sample_sizes]
 
 # a) Generar muestras aleatorias de tamaños 10^2, 10^3, 10^4 y 10^5
 for size, sample in zip(sample_sizes, samples):
@@ -41,17 +41,17 @@ plt.show()
 for size, sample in zip(sample_sizes, samples):
     mediana = np.median(sample)
     moda_result = mode(sample)
-    moda = moda_result.mode[0] if moda_result.count > 0 else None
+    moda = moda_result.mode if isinstance(moda_result.mode, np.ndarray) else moda_result.mode.item()
     print(f"Tamaño de la muestra {size} - Mediana: {mediana}, Moda: {moda}")
 
 # e) Hallar la media empírica de cada muestra y compararla con la esperanza teórica
-esperanza_teorica = 1 / p
+esperanza_teorica = lmbda
 for size, sample in zip(sample_sizes, samples):
     media_empirica = np.mean(sample)
     print(f"Tamaño de la muestra {size} - Media empírica: {media_empirica}, Esperanza teórica: {esperanza_teorica}")
 
 # f) Hallar la varianza empírica de cada muestra y compararla con la varianza teórica
-varianza_teorica = (1 - p) / (p**2)
+varianza_teorica = lmbda
 for size, sample in zip(sample_sizes, samples):
     varianza_empirica = np.var(sample)
     print(f"Tamaño de la muestra {size} - Varianza empírica: {varianza_empirica}, Varianza teórica: {varianza_teorica}")
