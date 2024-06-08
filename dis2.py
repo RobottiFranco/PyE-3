@@ -40,7 +40,8 @@ plt.show()
 # d) Hallar la mediana y la moda de cada muestra
 for size, sample in zip(sample_sizes, samples):
     mediana = np.median(sample)
-    moda = mode(sample).mode[0]
+    moda_result = mode(sample)
+    moda = moda_result.mode[0] if moda_result.count > 0 else None
     print(f"Tamaño de la muestra {size} - Mediana: {mediana}, Moda: {moda}")
 
 # e) Hallar la media empírica de cada muestra y compararla con la esperanza teórica
